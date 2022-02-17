@@ -1,0 +1,38 @@
+plugins {
+	id 'org.springframework.boot' version '2.6.1'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'java'
+}
+
+group = 'ufont'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    implementation 'org.projectlombok:lombok:1.18.22'
+	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+	runtimeOnly 'com.h2database:h2'
+	implementation 'net.tanesha.recaptcha4j:recaptcha4j:0.0.7'
+	implementation 'javax.json:javax.json-api:1.1.4'
+	implementation 'org.glassfish:javax.json:1.1.4'
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	implementation group: 'commons-io', name: 'commons-io', version: '2.6'
+	implementation group: 'com.google.code.gson', name: 'gson', version: '2.8.6'
+	implementation 'org.json:json:20200518'
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+}
+
+test {
+	useJUnitPlatform()
+}

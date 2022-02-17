@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:each="i : ${result}">
+    <div class="col col-lg-5 mt-5" style="border-top: 4px solid #6D5AA0;width: 60%;">
+        <div class="mt-3" style="float: left;">
+            <span th:text="${i['font_name']}" style="font-size: xx-large;"><b> </b></span>
+            <span th:text="|by ${i['font_copyright']}|" class="mb-5" style="font-size: larger;margin-left: 15px;"> </span>
+        </div>
+        <div class="mt-4" style="float: left;">
+            <img th:src="@{/images/font/} + ${i['font_url']}">
+        </div>
+    </div>
+</th:block>
+</html>

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<body>
+<th:block th:each="comment : ${comment}">
+    <div class="accordion-body">
+        <div class="bubble">
+            <div class="bubble_body" style="padding: 0 3% 0 3%;">
+                <input type="hidden" th:id="post_id" th:value="${post}">
+                <div class="comment_area" style="border: 1px solid lightgray;border-radius: 15px;padding: 10px;">
+                    <div class="comment_thumb" style="padding: 0;display: flex;margin: 0;">
+                        <div class="comment_name">
+                            <span th:text="${comment.getComment_name()}" style="color: gray;font-weight: bold;"></span>
+                        </div>
+                        <em style="display: inline-block;margin-top: -2px;margin-left: 4px;vertical-align: top;">
+                            <p style="width: 39px;height: 18px;display: inline-block;border: 1px solid rebeccapurple;border-radius: 30px;font-size: 11px;font-weight: bold;color: rebeccapurple;font-style: normal;padding-left: 2px;">작성자</p>
+                        </em>
+                    </div>
+                    <div class="comment_content">
+                        <textarea th:class="comment_update_textarea+${comment.id}" th:text="${comment.getComment_content()}" style="width: 98%;height: 47px;resize: none;border-color: white;background-color: white;" disabled></textarea>
+                    </div>
+                    <div class="comment_groups" style="display: flex;">
+                        <div class="comment_time">
+                        <span style="color: gray;font-size: 15px;">
+                            <time th:text="${#temporals.format(comment.getUpdated_at(), 'yyyy-MM-dd HH:mm')}"></time>
+                        </span>
+                        </div>
+                        <div class="comment_btns" style="padding-left: 1%;font-size: 15px;">
+                            <a href="javascript:void(0);" th:id="comment_update_btn+${comment.id}" th:onclick="|comment_update_btn('${comment.id}')|" style="color: gray;">수정</a>
+                            <a href="javascript:void(0);" th:id="comment_delete+${comment.id}" th:onclick="|comment_delete('${comment.id}')|" style="color: gray;">삭제</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function comment_update_btn(comment_id){
+            let update_btn="comment_update_btn"+comment_id;
+            let delete_btn='comment_delete'+comment_id;
+            let comment_update_textarea = document.querySelector(`.comment_update_textarea${comment_id}`);
+            if($("#"+update_btn).text() === "수정" ){
+                comment_update_textarea.disabled = false;
+                comment_update_textarea.focus();
+                $("#"+update_btn).text("완료");
+                $("#comment_delete" + comment_id).text("취소");
+                document.getElementById("comment_delete" + comment_id).onclick = function cancel(event) {
+                    comment_update_textarea.disabled = true;
+                    $("#" + update_btn).text("수정");
+                    $("#" + delete_btn).text("삭제");
+                    $("#" + delete_btn).attr("onclick", "comment_delete();");
+
+                }
+            } else {
+                comment_update(comment_id);
+            }
+        }
+    </script>
+    <script>
+        // 수정 클릭 시 뜨는 창 js
+        function comment_update(comment_id){
+            const { value: password } = Swal.fire({
+                html: `<label class="mt-5" style="font-size:larger;font-weight: bold;">수정할 댓글의 비밀번호를 입력해주세요.<input type="password" id="comment_update_password${comment_id}" class="swal2-input" minlength: "4" maxlength: "20" placeholder="비밀번호" style="width: 350px;"></label>`,
+                confirmButtonText: '확인',
+                confirmButtonColor: 'black',
+                showCloseButton: true,
+                inputAttributes: {
+                    maxlength: 20,
+                    minlength: 4,
+                    autocapitalize: 'off',
+                    autocorrect: 'off'
+                },
+                preConfirm: () => {
+                    const password = Swal.getPopup().querySelector(`#comment_update_password${comment_id}`).value;
+                    if (!password) { // 입력을 안했을 시 뜨는 메세지
+                        Swal.showValidationMessage(`수정할 댓글의 비밀번호를 입력해주세요.`)
+                    }
+                    return { password: password }
+                }
+            }).then((result) => {
+                let csrftoken = '{{ csrf_token }}'
+                const comment_password = result.value.password;
+                const comment_pk = comment_id;
+                $.ajax({
+                    url: "/comment_input_password/",   // 요청을 보낼 URL 주소. 기본값은 현재 URL 주소 // HTTP 요청과 함께 서버로 전송할 데이터
+                    type: "POST",          // HTTP 요청 방식
+                    data: {'comment_password':comment_password, 'comment_pk':comment_pk},
+                    headers:{'X-CSRFToken':csrftoken},
+                    success: function(response) {
+                        const comment_content = $(".comment_update_textarea" + comment_pk).val(); // 수정할 textarea 값 가져오기
+                        let btn="comment_update_btn"+comment_id;
+                        let comment_update_textarea = document.querySelector(`.comment_update_textarea${comment_id}`);
+                        if(response === "true"){
+                            $.ajax({
+                                url: "/comment_update/",   // 요청을 보낼 URL 주소. 기본값은 현재 URL 주소 // HTTP 요청과 함께 서버로 전송할 데이터
+                                type: "PUT",          // HTTP 요청 방식
+                                data: {'comment_pk':comment_pk, 'comment_content':comment_content},
+                                headers:{'X-CSRFToken':csrftoken},
+                                success: function(response) {
+                                    comment_update_textarea.disabled = true;
+                                    $("#"+btn).text("수정");
+                                },
+                                error: function(xhr) {
+                                    alert("Error");
+                                }
+                            });
+                        }else{
+                            Swal.fire({
+                                title: '비밀번호가 일치하지 않습니다. 다시 입력해주세요.',
+                                confirmButtonText: '확인',
+                                confirmButtonColor: 'black',
+                            })
+                        }
+                    },
+                    error: function(xhr) {           // Ajax로 통신이 실패할 경우 실행할 함수
+                        alert("Error");
+                    }
+                });
+            });
+        };
+    </script>
+    <script>
+        // 삭제 클릭 시 뜨는 창 js
+        function comment_delete(comment_id){
+            const { value: password } = Swal.fire({
+                html: `<label class="mt-5" style="font-size:larger;font-weight: bold;">삭제할 댓글의 비밀번호를 입력해주세요.<input type="password" id="comment_password${comment_id}" class="swal2-input" minlength: "4" maxlength: "20" placeholder="비밀번호" style="width: 350px;"></label>`,
+                confirmButtonText: '확인',
+                confirmButtonColor: 'black',
+                showCloseButton: true,
+                inputAttributes: {
+                    maxlength: 20,
+                    minlength: 4,
+                    autocapitalize: 'off',
+                    autocorrect: 'off'
+                },
+                preConfirm: () => {
+                    const password = Swal.getPopup().querySelector(`#comment_password${comment_id}`).value;
+                    if (!password) { // 입력을 안했을 시 뜨는 메세지
+                        Swal.showValidationMessage(`삭제할 댓글의 비밀번호를 입력해주세요.`);
+                    }
+                    return { password: password }
+                }
+            }).then((result) => {
+                let csrftoken2 = '{{ csrf_token }}'
+                const comment_password = result.value.password;
+                const comment_pk = comment_id;
+                const post_id = document.getElementById('post_id').value;
+                $.ajax({
+                    url: "/comment_input_password/",   // 요청을 보낼 URL 주소. 기본값은 현재 URL 주소 // HTTP 요청과 함께 서버로 전송할 데이터
+                    type: "POST",          // HTTP 요청 방식
+                    data: {'comment_password':comment_password, 'comment_pk':comment_pk},
+                    headers:{'X-CSRFToken':csrftoken2},
+                    success: function(response) {
+                        if(response === "true"){
+                            $.ajax({
+                                url: "/comment_delete/",   // 요청을 보낼 URL 주소. 기본값은 현재 URL 주소 // HTTP 요청과 함께 서버로 전송할 데이터
+                                type: "POST",          // HTTP 요청 방식
+                                data: {'comment_pk':comment_pk},
+                                headers:{'X-CSRFToken':csrftoken2},
+                                success: function(response) {
+                                    comment_show(post_id);
+                                },
+                                error: function(xhr) {
+                                    alert("Error");
+                                }
+                            });
+                        }else{
+                            Swal.fire({
+                                title: '비밀번호가 일치하지 않습니다. 다시 입력해주세요.',
+                                confirmButtonText: '확인',
+                                confirmButtonColor: 'black',
+                            })
+                        }
+                    },
+                    error: function(xhr) {           // Ajax로 통신이 실패할 경우 실행할 함수
+                        alert("Error");
+                    }
+                });
+            })
+        };
+    </script>
+</th:block>
+    <ul class="pagination justify-content-center">
+        <li class="page-item">
+            <a class="page-link">Previous</a>
+        </li>
+        <li class="page-item">
+            <a class="page-link">&nbsp;</a>
+        </li>
+        <li class="page-item">
+            <a class="page-link">Next</a>
+        </li>
+        <li class="page-item disabled">
+            <a class="page-link">Next</a>
+        </li>
+    </ul>
+</body>
+</html>

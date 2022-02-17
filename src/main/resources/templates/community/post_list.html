@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" th:href="@{/css/post_list.css}" />
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
+    <script type="text/javascript" th:src="@{/js/comment.js}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <div th:replace="/fragments/header.html :: fragment-header"></div>
+</head>
+<body>
+    <div th:replace="/fragments/navbar.html :: fragment-navbar"></div>
+
+    <section>
+        <div class="container">
+            <div class="row text-center col-md-offset-3" style="padding: 2rem 1rem;"> <!-- 게시판 타이틀 -->
+                <h1 id="post_list_h1">커뮤니티</h1>
+            </div>
+            <hr>
+
+            <div class="row post_list" style="width: 7%;position: relative;left: 93%;">
+                <a th:href="@{post_form}" class="btn btn-light btn-lg" role="button">글쓰기</a>
+                <a th:href="@{post_form}" class="btn btn-light btn-lg editicon" role="button"><i class="far fa-edit"></i></a> <!-- 아이콘 -->
+            </div>
+
+            <!-- 등록된 게시글이 없을 때 -->
+            <div th:if="${post_list.getContent().size() == 0}">
+                <div class="row" style="padding: 185px 0;text-align: center;">
+                    <span style="font-size: 60px;"><i class="bi bi-card-text"></i></span>
+                    <h2>등록된 게시글이 없습니다.</h2>
+                </div>
+            </div>
+
+            <!-- 게시글 2개만 있을 때 -->
+            <div th:if="${post_list.getContent().size() != 0}">
+                <div class="row justify-content-center gutter-1" style="padding: 95px 0 35px 0;">
+                    <th:block th:each="posts : ${post_list}">
+                    <div class="col-lg-8 mt-4"><!-- post -->
+                        <div class="card card-post card-post-lg">
+                            <form action="" method="POST">
+                                <input type="hidden" th:name="postId" th:value="${posts.id}"> <!-- post pk값 가지고 옴 -->
+                                <div class="card-body p-4">
+                                    <p th:utext="${posts.post_content}"></p>
+                                    <ul class="list list--horizontal list--separated text-uppercase fs-14 p-0 mt-4" style="height: 25px;text-align: right;margin: 0;display: flex;justify-content: space-between;">
+                                        <li class="post_list_li_name"> <!-- 게시물 등록 일자와 작성자 이름 -->
+                                            <p th:text="${posts.post_name}" style="color: gray;margin-right: 15px;"></p>
+                                            <p th:text="${#temporals.format(posts.updated_at, 'yyyy-MM-dd HH:mm')}" style="color: gray;"></p>
+                                        </li>
+                                        <li class="post_list_li_btn"> <!-- 수정버튼과 삭제버튼 -->
+                                            <a class="post_btn" href="javascript:void(0);" th:onclick="|post_update('${posts.id}')|">수정</a>
+                                            <a class="post_btn postdelete" href="javascript:void(0);" th:onclick="|post_delete('${posts.id}')|">삭제</a>
+                                            <a class="post_btn postdelete deleteicon" href="javascript:void(0);" th:onclick="|post_delete('${posts.id}')|"><i class="fas fa-trash-alt"></i></a> <!-- 아이콘 -->
+                                        </li>
+                                    </ul>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-lg-8" style="width: 100%;"> <!-- 댓글 -->
+                            <div class="accordion accordion-flush" id="accordionFlushExample">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="flush-headingOne">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" th:attr="data-bs-target='#flush-collapse'+${posts.id}" aria-controls="flush-collapseOne" aria-expanded="false" th:onclick="|comment_show('${posts.id}')|">
+                                            <i class="bi bi-chat-square-dots" style="padding-right: 4px;"></i>댓글<div id="comment_size"></div>
+                                        </button>
+                                    </h2>
+                                    <div th:id="flush-collapse+${posts.id}" class="accordion-collapse collapse" th:attr="aria-labelledby='flush-heading'+${posts.id}" data-bs-parent="#accordionFlushExample">
+                                        <div class="bg-white p-4">
+                                            <form method="POST" action="">
+                                                <fieldset class="mb-2">
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <div class="form-label-group" style="display: flex;width: 100%;">
+                                                                <input type="hidden" th:id="comment_post_id+${posts.id}" class="form-control form-control-lg" name="post" maxlength="100" required="" placeholder="게시물 번호">
+                                                                <input type="text" th:id="id_comment_name+${posts.id}" class="form-control form-control-lg" name="comment_name" maxlength="100" required="" placeholder="이름" onkeyup="characterCheck(this)" onkeydown="characterCheck(this)">
+                                                                <input type="password" th:id="id_comment_password+${posts.id}" class="form-control form-control-lg" name="comment_password" maxlength="255" required="" placeholder="비밀번호" onkeyup="characterCheck(this)" onkeydown="characterCheck(this)">
+                                                            </div>
+                                                        </div><!-- col-12 -->
+                                                    </div><!-- row -->
+                                                    <div class="row mt-2">
+                                                        <div class="col-12">
+                                                            <div class="form-label-group">
+                                                                <textarea class="form-control form-control-lg comment_content" name="comment_content" rows="3" required="" th:id="id_comment_content+${posts.id}" placeholder="댓글을 남겨보세요" style="resize: none;" onkeyup="characterCheck(this)" onkeydown="characterCheck(this)"></textarea>
+                                                            </div>
+                                                        </div> <!-- col-12 -->
+                                                    </div> <!-- row -->
+                                                </fieldset>
+                                                <input class="btn btn-block btn-primary" type="button" th:onclick="|comment_save('${posts.id}'); comment_show('${posts.id}');|" value="등록">
+                                            </form>
+                                        </div> <!-- bg-white p-4 -->
+                                        <div th:id="comment+${posts.id}" style="margin-top: 14px;"></div> <!-- 저장된 댓글 출력 -->
+                                        <div th:id="comment_update_show+${posts.id}"></div> <!-- 댓글 수정 폼 출력 -->
+                                    </div> <!-- accordion-collapse collapse -->
+                                </div> <!-- accordion-item -->
+                            </div> <!-- accordion accordion-flush -->
+                        </div> <!-- 댓글 end -->
+                    </div> <!-- end post -->
+
+                    <script>
+                        // 수정 클릭 시 뜨는 창 js
+                        function post_update(post){
+                            const { value: password } = Swal.fire({
+                                html: `<label class="mt-5" style="font-size:larger;font-weight: bold;">수정할 게시물의 비밀번호를 입력해주세요.
+                                    <input type="password" id="password`+post+`" class="swal2-input" minlength: "4" maxlength: "20" placeholder="비밀번호" style="width: 350px;"></label>`,
+                                confirmButtonText: '확인',
+                                confirmButtonColor: 'black',
+                                showCloseButton: true,
+                                inputAttributes: {
+                                    maxlength: 20,
+                                    minlength: 4,
+                                    autocapitalize: 'off',
+                                    autocorrect: 'off'
+                                },
+                                preConfirm: () => {
+                                    const password = Swal.getPopup().querySelector("#password"+post).value;
+                                    if (!password) { // 입력을 안했을 시 뜨는 메세지
+                                        Swal.showValidationMessage(`수정할 게시물의 비밀번호를 입력해주세요.`)
+                                    }
+                                    return { password: password }
+                                }
+                            }).then((result) => {
+                                let csrftoken = '{{ csrf_token }}'
+                                const post_password = result.value.password;
+                                const post_pk = post;
+                                $.ajax({
+                                    url: '/post_input_password/',
+                                    type: 'POST',
+                                    data: {'post_password':post_password, 'post_pk':post_pk},
+                                    headers:{'X-CSRFToken':csrftoken},
+                                    success: function(response) {
+                                        if(response === "true"){
+                                            const url = "/post_update/";
+                                            location.href = url + post_pk
+                                        }else{
+                                            Swal.fire({
+                                                title: '비밀번호가 일치하지 않습니다. 다시 입력해주세요.',
+                                                confirmButtonText: '확인',
+                                                confirmButtonColor: 'black',
+                                            })
+                                        }
+                                    },
+                                    error: function(xhr) {
+                                        alert("Error");
+                                    }
+                                });
+                            });
+                        };
+                    </script>
+                    <script>
+                        // 삭제 클릭 시 뜨는 창 js
+                        function post_delete(post){
+                            const { value: password } = Swal.fire({
+                                html: `<label class="mt-5" style="font-size:larger;font-weight: bold;">삭제할 게시물의 비밀번호를 입력해주세요.
+                            <input type="password" id="password`+post+`" class="swal2-input" minlength: "4" maxlength: "20" placeholder="비밀번호" style="width: 350px;"></label>`,
+                                confirmButtonText: '확인',
+                                confirmButtonColor: 'black',
+                                showCloseButton: true,
+                                inputAttributes: {
+                                    maxlength: 20,
+                                    minlength: 4,
+                                    autocapitalize: 'off',
+                                    autocorrect: 'off'
+                                },
+                                preConfirm: () => {
+                                    const password = Swal.getPopup().querySelector('#password'+post).value;
+                                    if (!password) { // 입력을 안했을 시 뜨는 메세지
+                                        Swal.showValidationMessage(`삭제할 게시물의 비밀번호를 입력해주세요.`)
+                                    }
+                                    return { password: password }
+                                }
+                            }).then((result) => {
+                                let csrftoken2 = '{{ csrf_token }}'
+                                const post_password = result.value.password;
+                                const post_pk = post;
+                                $.ajax({
+                                    url: "/post_input_password/",
+                                    type: "POST",
+                                    data: {'post_password':post_password, 'post_pk':post_pk},
+                                    headers:{'X-CSRFToken':csrftoken2},
+                                    success: function(response) {
+                                        if(response === "true"){
+                                            $.ajax({
+                                                url: "/post_delete/"+post_pk,
+                                                type: "post",
+                                                data: {'post_pk':post_pk},
+                                                headers:{'X-CSRFToken':csrftoken2},
+                                                success: function(response) {
+                                                    alert("삭제 되었습니다");
+                                                    location.reload();
+                                                },
+                                                error: function(xhr) {
+                                                    alert("Error");
+                                                }
+                                            });
+                                        }else{
+                                            Swal.fire({
+                                                title: '비밀번호가 일치하지 않습니다. 다시 입력해주세요.',
+                                                confirmButtonText: '확인',
+                                                confirmButtonColor: 'black',
+                                            })
+                                        }
+                                    },
+                                    error: function(xhr) {
+                                        alert("Error");
+                                    }
+                                });
+                            })
+                        };
+                    </script>
+                    </th:block>
+                </div> <!-- end row -->
+
+                <nav aria-label="Page navigation"  style="text-align: center" th:if="${post_list.getContent().size() > 0}">
+                    <ul class="pagination"
+                        th:with="start=${T(Math).floor(post_list.number/10) * 10 + 1},
+                  last=${(T(Math).floor(post_list.number/10) * 10 + 1) + 9 < post_list.totalPages ? (T(Math).floor(post_list.number/10) * 10 + 1) + 9 : post_list.totalPages}">
+
+                        <li class="page-item">
+                            <a class="page-link" th:href="@{/post_list(page=1)}" aria-label="First">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+
+                        <li class="page-item" th:each="page: ${#numbers.sequence(start, last)}" th:class="${page == post_list.number + 1} ? 'active'">
+                            <a class="page-link" th:text="${page}" th:href="@{/post_list(page=${page})}">&nbsp;</a>
+    <!--                        <strong th:if="${page}" th:text="${page}" style="color: rebeccapurple"></strong>-->
+                        </li>
+
+                        <li class="page-item" th:if="${check} == true">
+                            <a class="page-link" th:href="@{/post_list(page=${post_list.totalPages})}" aria-label="Last">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                        <li class="page-item disabled" th:if="${check} == false">
+                            <a class="page-link" th:href="@{/post_list(page=${post_list.totalPages})}" aria-label="Last">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div> <!-- end container-->
+    </section>
+
+    <footer th:replace="/fragments/footer.html :: fragment-footer"></footer>
+
+    <script type="text/javascript" th:src="@{/js/navbar.js}"></script>
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script> <!-- ajax 실행 -->
+    <script>
+        function characterCheck(obj){
+            // 허용하고 싶은 특수문자가 있다면 여기서 삭제하면 됨
+            var regExp = /[ \{\}\[\]\/?.,;:|\)*~`!^\-_+┼<>@\#$%&\'\"\\\(\=]/gi;
+
+            if( regExp.test(obj.value) ){
+                alert("특수문자는 입력하실수 없습니다.");
+                obj.value = obj.value.substring( 0 , obj.value.length - 1 ); // 입력한 특수문자 한자리 지움
+            }
+        }
+    </script>
+</body>
+</html>

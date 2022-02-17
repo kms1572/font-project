@@ -1,0 +1,178 @@
+.row.post_list {
+    width: 7%;
+    position: relative;
+    left: 94%;
+}
+
+a.page-link {
+    color: black;
+}
+
+.btn-primary:hover{
+    color: black;
+    background-color: #fff;
+    border-color: black;
+}
+
+a.btn.btn-light.btn-lg {
+    font-weight: bold;
+    font-size: medium;
+    border: 1px solid;
+    background-color: white;
+    color: #675698;
+    min-width: max-content;
+}
+
+a.btn.btn-light.btn-lg.editicon {
+    display: none;
+}
+
+a.post_btn.postdelete.deleteicon {
+    display: none;
+}
+
+.feed {
+    border-top: 1px solid #c0c0c0;
+    border-bottom: 1px solid #c0c0c0;
+    margin: 7px 0;
+    padding: 12px;
+}
+
+.date {
+    color: #999;
+    margin-bottom: 10px;
+}
+
+.title {
+    color: #6184dddd;
+    font-weight: 600;
+}
+
+.content {
+    margin-top: 5px;
+}
+
+.accessory {
+    border-top: 1px solid #eee;
+    padding-top:10px;
+    margin-top:10px;
+    color: #999;
+    font-size: 14px;
+}
+
+.form-control {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-clip: padding-box;
+    color: #212529;
+    display: block;
+    font-size: .875rem;
+    font-weight: 400;
+    line-height: 1.5;
+    padding: .375rem .75rem;
+    width: 100%;
+}
+
+.form-control-lg {
+    font-size: 0.8rem !important;
+}
+
+ul.list.list--horizontal.list--separated.text-uppercase.fs-14 {
+    list-style: none;
+}
+
+.card-text:last-child {
+    padding: 0 30px;
+}
+
+.btn-primary {
+    color: #000;
+    background-color: #ffffff;
+    border-color: #000000;
+    float: right;
+}
+
+.accordion-button:not(.collapsed) {
+    color: #000000;
+    background-color: #ffffff;
+    box-shadow: none;
+}
+
+.accordion-button:focus {
+    box-shadow: none;
+}
+
+.accordion-button:not(.collapsed)::after {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23212529'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e") !important;
+}
+
+/* 커뮤니티 목록 이미지 반응형 */
+/*img {*/
+/*    position: relative;*/
+/*    width: 100% !important;*/
+/*    height: 100%;*/
+/*}*/
+img {
+    max-width: 100%;
+}
+
+li.post_list_li_name {
+    display: flex;
+    /*min-width: 100%;*/
+}
+
+.post_list_page { /* 페이징 */
+    margin-bottom: 30px;
+}
+
+.pagination {
+    justify-content: center;
+}
+
+li.active {
+    font-weight: bold;
+}
+
+input.btn.btn-block.btn-primary {
+    color: #000;
+    background-color: #ffffff;
+    border-color: #000000;
+}
+
+.accordion-button:focus {
+    border-color: #ffffff !important;
+    box-shadow: 0 0 0 0.25rem rgb(255 255 255 / 25%) !important;
+}
+
+.accordion-button:not(.collapsed) {
+    color: #000000 !important;
+    background-color: #ffffff !important;
+}
+
+/* sm (태블릿, 768px and up) */
+@media (max-width: 768px) {
+    .row.post_list {
+        width: 12%;
+        position: relative;
+        left: 97% !important;
+    }
+    a.btn.btn-light.btn-lg.editicon {
+        display: contents;
+    }
+    a.btn.btn-light.btn-lg {
+        display: none;
+    }
+    svg:not(:root).svg-inline--fa {
+        overflow: visible;
+    }
+    a.post_btn.postdelete {
+        display: none;
+    }
+    a.post_btn.postdelete.deleteicon {
+        display: contents;
+    }
+    h1#post_list_h1 {
+        font-size: large;
+    }
+}

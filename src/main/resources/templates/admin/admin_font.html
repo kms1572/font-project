@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" th:href="@{/css/admin/admin_font.css}" />
+    <div th:replace="/fragments/admin_header.html :: fragment-header"></div>
+</head>
+<body>
+    <div class="l-navbar" id="navbar">
+        <div th:replace="/admin/sidebar.html :: fragment-navbar"></div>
+    </div>
+
+    <h1>Font</h1>
+
+    <table class="admin_font_table" style="margin-left: 60px;">
+        <caption>테이블명 : FONT</caption>
+        <thead>
+        <tr>
+            <th class="admin_font_th" scope="col" style="width: 5%">ID</th>
+            <th class="admin_font_th" scope="col" style="width: 25%">FONT_COPYRIGHT</th>
+            <th class="admin_font_th" scope="col" style="width: 25%">FONT_NAME</th>
+            <th class="admin_font_th" scope="col">FONT_URL</th>
+        </tr>
+        </thead>
+        <tbody style="text-align: center;">
+        <th:block th:each="fonts : ${fontList}">
+            <tr>
+                <th scope="row" th:text="${fonts.getId()}"></th>
+                <td th:text="${fonts.getFont_copyright()}"></td>
+                <td th:text="${fonts.getFont_name()}"></td>
+                <td th:text="${fonts.getFont_url()}"></td>
+            </tr>
+        </th:block>
+        </tbody>
+    </table>
+<!--    <nav aria-label="Page navigation"  style="text-align: center" th:if="${fontList.size() > 0}">-->
+<!--        <ul class="pagination"-->
+<!--            th:with="start=${T(Math).floor(fontList.number/10) * 10 + 1},-->
+<!--                  last=${(T(Math).floor(fontList.number/10) * 10 + 1) + 9 < fontList.totalPages ? (T(Math).floor(fontList.number/10) * 10 + 1) + 9 : fontList.totalPages}">-->
+
+<!--            <li class="page-item">-->
+<!--                <a class="page-link" th:href="@{/post_list(page=1)}" aria-label="First">-->
+<!--                    <span aria-hidden="true">&laquo;</span>-->
+<!--                </a>-->
+<!--            </li>-->
+
+<!--            <li class="page-item" th:each="page: ${#numbers.sequence(start, last)}" th:class="${page == fontList.number + 1} ? 'active'">-->
+<!--                <a class="page-link" th:text="${page}" th:href="@{/admin_font(page=${page})}">&nbsp;</a>-->
+<!--                &lt;!&ndash;                        <strong th:if="${page}" th:text="${page}" style="color: rebeccapurple"></strong>&ndash;&gt;-->
+<!--            </li>-->
+
+<!--            <li class="page-item">-->
+<!--                <a class="page-link" th:href="@{/admin_font(page=${fontList.totalPages})}" aria-label="Last">-->
+<!--                    <span aria-hidden="true">&raquo;</span>-->
+<!--                </a>-->
+<!--            </li>-->
+<!--            <li class="page-item disabled">-->
+<!--                <a class="page-link" th:href="@{/admin_font(page=${fontList.totalPages})}" aria-label="Last">-->
+<!--                    <span aria-hidden="true">&raquo;</span>-->
+<!--                </a>-->
+<!--            </li>-->
+<!--        </ul>-->
+<!--    </nav>-->
+
+    <!-- IONICONS -->
+    <script src="https://unpkg.com/ionicons@5.2.3/dist/ionicons.js"></script>
+    <!-- JS -->
+    <script type="text/javascript" th:src="@{/js/sidebar.js}"></script>
+</body>
+</html>

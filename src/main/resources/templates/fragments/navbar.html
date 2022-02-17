@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+    <nav class="navbar" th:fragment="fragment-navbar">
+        <div class="navbar_logo2">
+            <a href="/"><img class="navbar_logo_img"
+                             src="/images/ufont_logo.svg"
+                             style="width: 10vw !important;"></a>
+        </div>
+        <ul class="navbar_menu">
+            <li><a class="navbar_a" th:href="@{/}">폰트 검색</a></li>
+            <li><a class="navbar_a" th:href="@{post_list}" >커뮤니티</a></li>
+        </ul>
+        <a href="#" class="navbar_toogleBtn"><i class="bi bi-list"></i></a>
+    </nav>
+</html>

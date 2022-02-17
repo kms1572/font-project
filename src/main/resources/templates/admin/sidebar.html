@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<nav class="nav" th:fragment="fragment-navbar">
+    <div>
+        <div class="nav__brand">
+            <ion-icon name="menu-outline" class="nav__toggle" id="nav-toggle"></ion-icon>
+            <a th:href="@{/admin}" class="nav__logo">UFONT</a>
+        </div>
+        <div class="nav__list">
+            <a th:href="@{/admin}" class="nav__link active">
+                <ion-icon name="home-outline" class="nav__icon"></ion-icon>
+                <span class="nav_name">Home</span>
+            </a>
+            <div href="#" class="nav__link collapse">
+                <ion-icon name="folder-outline" class="nav__icon"></ion-icon>
+                <span class="nav_name">Apps</span>
+
+                <ion-icon name="chevron-down-outline" class="collapse__link"></ion-icon>
+
+                <ul class="collapse__menu">
+                    <a th:href="@{/admin/font}" class="collapse__sublink">Font</a>
+                    <a th:href="@{/admin/post}" class="collapse__sublink">Post</a>
+                    <a th:href="@{/admin/comment}" class="collapse__sublink">Comment</a>
+                </ul>
+            </div>
+
+            <div href="#" class="nav__link collapse">
+                <ion-icon name="people-outline" class="nav__icon"></ion-icon>
+                <span class="nav_name">계정 관리</span>
+
+                <ion-icon name="chevron-down-outline" class="collapse__link"></ion-icon>
+
+                <ul class="collapse__menu">
+                    <a href="#" class="collapse__sublink">Members</a>
+                </ul>
+            </div>
+
+<!--            <a href="#" class="nav__link">-->
+<!--                <ion-icon name="settings-outline" class="nav__icon"></ion-icon>-->
+<!--                <span class="nav_name">Settings</span>-->
+<!--            </a>-->
+        </div>
+        <a href="#" class="nav__link">
+            <ion-icon name="log-out-outline" class="nav__icon"></ion-icon>
+            <span class="nav_name">로그아웃</span>
+        </a>
+    </div>
+</nav>
+</html>

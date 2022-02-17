@@ -1,0 +1,33 @@
+{
+  "properties": [
+    {
+      "name": "google",
+      "type": "java.lang.String",
+      "description": "Description for google."
+    },
+    {
+      "name": "google.recaptcha.url",
+      "type": "java.lang.String",
+      "description": "Description for google.recaptcha.url."
+    },
+    {
+      "name": "google.recaptcha.key",
+      "type": "java.lang.String",
+      "description": "Description for google.recaptcha.key."
+    },
+    {
+      "name": "google.recaptcha.secret",
+      "type": "java.lang.String",
+      "description": "Description for google.recaptcha.secret."
+    },
+    {
+      "name": "use-new-id-generator-mappings",
+      "type": "java.lang.String",
+      "description": "Description for use-new-id-generator-mappings."
+    },
+    {
+      "name": "hibernate.dialect",
+      "type": "java.lang.String",
+      "description": "Description for hibernate.dialect."
+    }
+  ] }

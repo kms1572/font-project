@@ -1,0 +1,136 @@
+a{
+    text-decoration: none;
+    color: black;
+}
+
+/* 미디어 쿼리 */
+ /* xs (스마트폰, 576px and up) */
+@media (min-width: 576px) {
+    body{
+        background-color: red;
+    }
+}
+
+ /* sm (태블릿, 768px and up) */
+@media (min-width: 768px) {
+    body{
+        background-color: blue;
+    }
+    .col-md-4 {
+        flex: auto;
+    }
+}
+
+/* md (desktops, 992px and up) */
+@media (min-width: 992px) {
+    body{
+        background-color: violet;
+    }
+    .footer_social_icon{
+        display: flex;
+        align-items: flex-end;
+    }
+}
+
+ /* lg (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+    body{
+        background-color: yellowgreen;
+    }
+}
+
+ /* XX-Large devices (larger desktops, 1400px and up) */
+@media (min-width: 1400px) {
+    body{
+        background-color: white;
+    }
+}
+
+.navbar-collapse {
+    text-align: center;
+}
+/* navbar css */
+.navbar {
+    display: flex;
+    align-items: center;
+    padding: 2rem 5rem;
+    z-index: 9999;
+}
+
+.navbar_logo {
+    font-size: x-large;
+}
+
+.navbar_logo2 {
+    font-size: xx-large;
+}
+
+.navbar_menu {
+    display: flex;
+    list-style: none;
+    padding-left: 0; /* 중간에 맞춤 */
+    margin-bottom: 0;
+}
+
+.navbar_menu li {
+    padding: 8px 12px;
+}
+
+.navbar_menu li:hover {
+    font-weight: bolder;
+}
+
+.navbar_signup_login {
+    display: flex;
+    list-style: none;
+    padding-left: 0; /* 중간에 맞춤 */
+    margin-bottom: 0;
+}
+
+.navbar_signup_login li {
+    padding: 8px 12px;
+}
+
+.navbar_toogleBtn {
+    display: none;
+    position: absolute;
+    right: 32px;
+    font-size: x-large;
+    top: 12px;
+}
+
+@media screen and (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 8px 24px;
+    }
+
+    .navbar_menu {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+
+    .navbar_menu li {
+        width: 100%;
+        text-align: center;
+    }
+
+    .navbar_signup_login {
+        display: none;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .navbar_toogleBtn {
+        display: block;
+    }
+
+    .navbar_menu.active,
+    .navbar_signup_login.active {
+        display: flex;
+    }
+}
+/* navbar end */

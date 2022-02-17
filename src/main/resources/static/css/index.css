@@ -1,0 +1,109 @@
+/* image upload */
+.inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	z-index: -1;
+}
+.inputfile + label {
+    font-size: 1.25em;
+    font-weight: 700;
+}
+.inputfile:focus + label,
+.inputfile + label:hover {
+    background-color: rgb(255 255 255);
+}
+.inputfile + label {
+	cursor: pointer; /* "hand" cursor */
+}
+.inputfile:focus + label {
+	outline: 1px dotted;
+	outline: -webkit-focus-ring-color auto 5px;
+}
+.js .inputfile {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+.index_wrap.upload_preview_image_div {
+    width: 580px;
+    height: 361px;
+    border: 2px solid;
+}
+.inputfile-4 + label {
+    color: #000000;
+}
+.inputfile + label {
+    padding: 0.625rem 1.25rem;
+    top: 7rem;
+    position: relative;
+}
+.inputfile-4 + label figure {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: block;
+    margin: 0 auto 10px;
+}
+.inputfile-4 + label svg {
+    width: 100%;
+    height: 100%;
+    fill: #000000;
+}
+/* end image upload */
+
+div#View_area{ /* 미리보기 */
+    position:relative;
+    width: 200px;
+    height: 150px;
+    bottom: 12.9rem;
+    right: 1rem;
+}
+
+/* 검색 버튼 */
+button#inputGroupFileAddon04 {
+    min-width: 150px;
+    padding: 0px 20px;
+    /* border-radius: 3px; */
+    background-color: #fff;
+    font-family: 'Montserrat', Noto Sans KR, sans-serif;
+    color: #111427;
+    line-height: 50px;
+    word-break: break-all;
+    box-shadow: 0 20px 40px rgb(17 20 39 / 10%);
+    font-size: large;
+    /* border: none; */
+}
+button#inputGroupFileAddon04:hover {
+    color: #675698;
+    font-size: large;
+    border: 1px solid;
+}
+.btn-outline-secondary {
+    border-color: white;
+}
+/* end 검색 버튼 */
+
+.row.index_result { /* 검색 결과 가운데 */
+    flex-direction: column;
+    align-items: center;
+}
+
+#topBtn{
+    position: fixed;
+    right: 25px;
+    bottom: 25px;
+    display: none;
+    z-index: 999;
+}
+
+ /* 1199px */
+@media (max-width: 1199px) {
+    body{
+        background-color: yellowgreen;
+    }
+}

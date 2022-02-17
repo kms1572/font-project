@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" th:href="@{/css/index.css}" />
+    <link rel="stylesheet" th:href="@{/css/darkroom.css}" />
+    <!-- topbtn $ 실행 -->
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script type="text/javascript" th:src="@{/js/index.js}"></script>
+
+    <div th:replace="/fragments/header.html :: fragment-header"></div>
+</head>
+<body>
+    <div th:replace="/fragments/navbar.html :: fragment-navbar"></div>
+    <section class="index_section" id="section2" style="height: 800px;">
+        <div class="container">
+            <div class="row">
+                <div class="col" style="text-align: center;padding-left: 4rem;">
+                    <!-- 이미지 업로드 -->
+                    <div class="index_wrap upload_preview_image_div" id="test">
+                        <input type="file" class="inputfile inputfile-4" id="file-5" aria-describedby="inputGroupFileAddon04" onchange="previewImage(this,'View_area')">
+                        <label for="file-5">
+                            <figure><svg xmlns="http://www.w3.org/2000/svg" width="20" height="17" viewBox="0 0 20 17">
+                                <path d="M10 0l-5.2 4.9h3.3v5.1h3.8v-5.1h3.3l-5.2-4.9zm9.3 11.5l-3.2-2.1h-2l3.4 2.6h-3.5c-.1 0-.2.1-.2.1l-.8 2.3h-6l-.8-2.2c-.1-.1-.1-.2-.2-.2h-3.6l3.4-2.6h-2l-3.2 2.1c-.4.3-.7 1-.6 1.5l.6 3.1c.1.5.7.9 1.2.9h16.3c.6 0 1.1-.4 1.3-.9l.6-3.1c.1-.5-.2-1.2-.7-1.5z"></path>
+                            </svg></figure>
+                            <span>이미지 업로드</span>
+                        </label>
+                        <div id="View_area">
+                        </div>
+                    </div>
+                </div>
+                <div class="col" style="align-self: center;padding-left: 8rem;">
+                    <!-- 검색 버튼 -->
+                    <form method="POST" action="/font_result" enctype="multipart/form-data">
+                        <div class="index_wrap">
+                            <p id="index_font_search_text"> 폰트 검색 </p>
+                            <p class="mb-5 index_font_search_text_two"> 폰트 검색을 원하는 이미지를 업로드해 주세요. </p>
+                            <button class="btn btn-outline-secondary content" type="button" id="inputGroupFileAddon04"><b>검색</b></button>
+                        </div>
+                    </form>
+                </div>
+            </div><!-- end row -->
+        </div> <!-- end container -->
+    </section>
+
+    <section class="index_section">
+        <div class="container" style="text-align: center;">
+            <div class="row justify-content-md-center" id="result" style="height: auto;">
+                <div class="col col-lg-2 index_preview" style="width: 100%;height: 500px;display: contents;">
+                    <div class="mt-4 index_preview" style="margin-bottom: 30px;">
+                        <h2 style="font-weight: bold;">검색 결과</h2>
+                        <img src="https://placehold.co/400x200?text=Please+Search" id="find_text_img" style="margin-top: 5%;width: 400px;height: 200px;">
+                    </div>
+                    <div class="col-md-auto"></div>
+                    <div class="row index_result pb-5" id="searchresult"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- 위로 올라가는 top -->
+    <a id="topBtn" href="#">
+        <img src="/images/topbtn.png" width="50" height="50">
+    </a>
+
+    <footer th:replace="/fragments/footer.html :: fragment-footer"></footer>
+
+    <script type="text/javascript" th:src="@{/js/navbar.js}"></script>
+    <script type="text/javascript" th:src="@{/js/fabric.js}"></script>
+    <script type="text/javascript" th:src="@{/js/darkroom.js}"></script>
+</body>
+</html>

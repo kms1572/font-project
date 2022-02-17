@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="/fragments/admin_header.html :: fragment-header"></div>
+</head>
+<body>
+<div class="l-navbar" id="navbar">
+    <div th:replace="/admin/sidebar.html :: fragment-navbar"></div>
+</div>
+<h1>Post</h1>
+
+<!-- IONICONS -->
+<script src="https://unpkg.com/ionicons@5.2.3/dist/ionicons.js"></script>
+<!-- JS -->
+<script type="text/javascript" th:src="@{/js/sidebar.js}"></script>
+</body>
+</html>
